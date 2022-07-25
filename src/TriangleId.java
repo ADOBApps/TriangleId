@@ -28,10 +28,13 @@ class TriangleId implements ActionListener{
 	JButton jb_calc, jb_type;
 	JFrame frame1;
 	JLabel jl_part1, jl_part2, jl_part3;
-	JLabel jl_area, jl_type;
+	JLabel jl_area, jl_type, jl_angles;
 	JPanel jp_info, jp_control, jp_result;
 	JTextField jtf_part1, jtf_part2, jtf_part3;
-	float a, b, c;
+	double a, b, c, p, sp, area;
+	double degrees, radians, radiansAux;
+	double a_cos, b_cos, c_cos;
+	int type_tri;
 
 	public TriangleId(){
 		btitle1 = BorderFactory.createTitledBorder("Dimensiones del triangulo");
@@ -50,17 +53,20 @@ class TriangleId implements ActionListener{
 		contentPane = frame1.getContentPane();
 
 		jl_part1 = new JLabel();
-		jl_part1.setText("Longitud del lado A");
+		jl_part1.setText("Longitud del lado A (cm)  ");
 		jl_part2 = new JLabel();
-		jl_part2.setText("Longitud del lado B");
+		jl_part2.setText("Longitud del lado B (cm)  ");
 		jl_part3 = new JLabel();
-		jl_part3.setText("Longitud del lado C");
+		jl_part3.setText("Longitud del lado C (cm)  ");
 
 		jl_area = new JLabel();
 		jl_area.setText("Area del triangulo: ");
 
 		jl_type = new JLabel();
 		jl_type.setText("Tipo de triangulo: ");
+
+		jl_angles = new JLabel();
+		jl_angles.setText("Angulos: ");
 
 		jp_info = new JPanel();
 		jp_info.setLayout(new GridBagLayout());
@@ -78,15 +84,18 @@ class TriangleId implements ActionListener{
 		jtf_part2.setInputVerifier(new MyVerifier());
 		jtf_part3 = new JTextField(10);
 		jtf_part3.setInputVerifier(new MyVerifier());
-		a = (float)1.0;
-		b = (float)1.0;
-		c = (float)1.0;
+		a = 1.0;
+		b = 1.0;
+		c = 1.0;
+		p = 0.0;
+		sp = 0.0;
+		area = 0.0;
+		type_tri = 0;
 
 		makeGraph();
 	}
 
 	public static void main(String arg[]){
-		System.out.println("test");
 		TriangleId ti = new TriangleId();
 	}
 
@@ -160,8 +169,17 @@ class TriangleId implements ActionListener{
 		gbctts.gridwidth=1;
 		gbctts.gridheight=1;
 		jp_result.add(jl_type, gbctts);
+
 		gbctts.gridx=0;//column
 		gbctts.gridy=1;//row
+		gbctts.gridwidth=1;
+		gbctts.gridheight=2;
+		gbctts.weighty=2.0;
+		jp_result.add(jl_angles, gbctts);
+		gbctts.weighty=1.0;//restore
+
+		gbctts.gridx=0;//column
+		gbctts.gridy=3;//row
 		gbctts.gridwidth=2;
 		gbctts.gridheight=1;
 		jp_result.add(jl_area, gbctts);
@@ -180,28 +198,119 @@ class TriangleId implements ActionListener{
 
 	public void actionPerformed(ActionEvent ae){
 		if(ae.getSource() == jb_calc){
-			System.out.println("Calculando 1");
+			a = Double.parseDouble(jtf_part1.getText()); //get A-length
+			b = Double.parseDouble(jtf_part2.getText()); //get B-length
+			c = Double.parseDouble(jtf_part3.getText()); //get C-length
+			//Perimeter
+			p = a+b+c;
+			//Calculate area using perimeter and length
+			sp = (p/2);
+			//Also round
+			area = Math.round( Math.sqrt(sp*(sp-a)*(sp-b)*(sp-c)) );
+
+			//Verify if float is number
+			if(Double.isNaN(area)){
+				jl_area.setText("El area no pudo ser calculada");
+			} else {
+				jl_area.setText("Area del triangulo: "+((String)Double.toString(area))+" cm^2");
+				System.out.println( ((String)Double.toString(area)) );
+			}
 		}
 		else if ( ae.getSource() == jb_type ){
-
-			a = Float.parseFloat(jtf_part1.getText());
-			b = Float.parseFloat(jtf_part2.getText());
-			c = Float.parseFloat(jtf_part3.getText());
+			a = Double.parseDouble(jtf_part1.getText()); //get A-length
+			b = Double.parseDouble(jtf_part2.getText()); //get B-length
+			c = Double.parseDouble(jtf_part3.getText()); //get C-length
 
 			//case equilatero
 			if( a == b && a == c){
 				jl_type.setText("Tipo de triangulo: equilatero");
 				System.out.println("Tipo de triangulo: equilatero");
+				type_tri = 1;
 			} 
-			//case isosoles
+			//case isósceles
 			else if( (a == b || a == c || b == c) ){
-				System.out.println("Tipo de triangulo: isosoles");
-				jl_type.setText("Tipo de triangulo: isosoles");
+				System.out.println("Tipo de triangulo: isosceles");
+				jl_type.setText("Tipo de triangulo: isosceles");
+				type_tri = 2;
 			}
 			//case escaleno
 			else if( a != b && a != c && b != c){
 				System.out.println("Tipo de triangulo: escaleno");
 				jl_type.setText("Tipo de triangulo: escaleno");
+				type_tri = 3;
+			}
+
+			switch(type_tri){
+				//case equilatero
+				case 1:
+					jl_angles.setText("A = B = C = 60 grados");
+				break;
+
+				//case isósceles
+				case 2:
+					if( a == b ){
+						//C value by cosin lay
+						c_cos = ((a*a)+(b*b)-(c*c))/(2*a*b);
+						//angle in radians
+						radiansAux = Math.acos(c_cos);
+						//radians to degree and round
+						degrees = Math.round( Math.toDegrees(radiansAux) );
+						//Force string conversion
+						String s_c = ((String)Double.toString(degrees));
+						String s_ab = ((String)Double.toString( (180-degrees)/2 ));
+						jl_angles.setText("Angulos: C=" +s_c+ " grados, A = B = "+s_ab+" grados");
+					}
+					else if( a == c ){
+						//B value by cosin lay
+						b_cos = ((a*a)+(c*c)-(b*b))/(2*a*c);
+						//angle in radians
+						radiansAux = Math.acos(b_cos);
+						//radians to degree and round
+						degrees = Math.round( Math.toDegrees(radiansAux) );
+						//Force string conversion
+						String s_b = ((String)Double.toString(degrees));
+						String s_ac = ((String)Double.toString( (180-degrees)/2 ));
+						jl_angles.setText("Angulos: B=" +s_b+ " grados, A=C="+s_ac+" grados");
+					}
+					else if( c == b ){
+						//A value by cosin lay
+						a_cos = ((b*b)+(c*c)-(a*a))/(2*b*c);
+						//angle in radians
+						radiansAux = Math.acos(a_cos);
+						//radians to degree and round
+						degrees = Math.round( Math.toDegrees(radiansAux) );
+						//Force string conversion
+						String s_a = ((String)Double.toString(degrees));
+						String s_bc = ((String)Double.toString( (180-degrees)/2 ));
+						jl_angles.setText("Angulos: A=" +s_a+ " grados, B=C="+s_bc+" grados");
+					}
+				break;
+
+				//case escaleno
+				case 3:
+					//A value by cosin lay
+					a_cos = ((b*b)+(c*c)-(a*a))/(2*b*c);
+					//B value by cosin lay
+					b_cos = ((a*a)+(c*c)-(b*b))/(2*a*c);
+					//C value by cosin lay
+					c_cos = ((a*a)+(b*b)-(c*c))/(2*a*b);
+
+					//radians to degree and round
+					double degrees_a = Math.round( Math.toDegrees(Math.acos(a_cos)) );
+					double degrees_b = Math.round( Math.toDegrees(Math.acos(b_cos)) );
+					double degrees_c = Math.round( Math.toDegrees(Math.acos(c_cos)) );
+
+					//Force string conversion
+					String s_a = ((String)Double.toString(degrees_a));
+					String s_b = ((String)Double.toString(degrees_b));
+					String s_c = ((String)Double.toString(degrees_c));
+					jl_angles.setText("Angulos: A="+s_a+" grados, B="+s_b+" grados, C="+s_c+" grados");
+
+				break;
+
+				default:
+					jl_angles.setText("No se pudieron calcular los angulos");
+				break; 
 			}
 		}
 	}
