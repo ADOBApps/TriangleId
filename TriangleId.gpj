@@ -1,5 +1,5 @@
-!1514;s
-A
+!1612;s
+J
 SAU0JGRASP_MAIN_BOUNDS=%<CONTROL_SHELL_BOUNDS>\012PATH+=%<JGRASP_PATHS>%;\012PATH=+%;%<JGRASP_C_PATHS>\012CYGWIN=nodosfilewarning\012GCC_COLORS=\012-Run\012ADD_EXE_PATH==Y\012
 SCU0JGRASP_MAIN_BOUNDS=%<CONTROL_SHELL_BOUNDS>\012PATH+=%<JGRASP_PATHS>%;\012PATH=+%;%<JGRASP_C_PATHS>\012CYGWIN=nodosfilewarning\012GCC_COLORS=\012-Run\012ADD_EXE_PATH==Y\012
 S+U0JGRASP_MAIN_BOUNDS=%<CONTROL_SHELL_BOUNDS>\012PATH+=%<JGRASP_PATHS>%;\012PATH=+%;%<JGRASP_C_PATHS>\012CYGWIN=nodosfilewarning\012GCC_COLORS=\012-Run\012ADD_EXE_PATH==Y\012
@@ -8,9 +8,25 @@ SXU0
 SOU0JGRASP_MAIN_BOUNDS=%<CONTROL_SHELL_BOUNDS>\012PATH+=%<JGRASP_PATHS>%;\012PATH=+%;%<JGRASP_C_PATHS>\012CYGWIN=nodosfilewarning\012GCC_COLORS=\012-Run\012ADD_EXE_PATH==Y\012
 SyU0JGRASP_MAIN_BOUNDS=%<CONTROL_SHELL_BOUNDS>\012PATH+=%<PYTHON_PATH>%;\012PATH+=%<JGRASP_PATHS>%;\012CYGWIN=nodosfilewarning\012GCC_COLORS=
 SPU0
+b#c11
+s#g0/src/
 s#i0
 s#k0
 s#j0
 s#l0
-!338;d
-[\012  grasp [\012   legendy 0.0\012   legendx 0.0\012   version 1\012   winflags 1\012   eheight 691\012   ewidth 683\012   height 691\012   width 683\012   wbp 0\012   initlayout 0\012   yoffs 0.0\012   xoffs 0.0\012   scale 1.0\012   args ""\012   otherflags 139\012   shallowjar 1\012   visflags 118423807\012  ]\012  directed 1\012 ]
+s#m0src/
+s#n0classes/
+s#o0temp/
+s#p0docs/
+s#s0res/
+s#q0test/
+s#r0bin/
+s#w0canvas/
+!107;u
+a0	b166	c255	f%\011TriangleId.jar	g%\011TriangleId.zip	hManifest-Version\0111.0\011Main-Class\011TriangleId!20;a
+a%\011docs%s	b	c1	d1!67;g
+%\011src%smycontrollers%sMyVerifier.java
+%\011src%sTriangleId.java
+!67;f
+%\011src%smycontrollers%sMyVerifier.java
+%\011src%sTriangleId.java
