@@ -25,7 +25,7 @@ public class MyVerifier extends InputVerifier{
 				Float.parseFloat(text);
 				return true;
 			}catch(Exception e){
-				JOptionPane.showMessageDialog(tf, "No es un #");
+				JOptionPane.showMessageDialog(tf, "Valor no valido");
 				return false;
 			}
 		}
